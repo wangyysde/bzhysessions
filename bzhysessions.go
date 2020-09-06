@@ -2,15 +2,17 @@
 // Use of this source code is governed by a MIT style
 // license that can be found in the LICENSE file.
 
-
 package bzhysessions
 
 import (
-	"log"
+	//	"github.com/wangyysde/bzhylog"
 	"net/http"
-	
-	"bzhyserver"
-	"bzhycontext"
+
+	"golang/pipe/golang/pkg/mod/github.com/gorilla/sessions@v1.2.0"
+	"golang/pipe/golang/pkg/mod/github.com/wangyysde/bzhysessions@v0.0.0-20200903142906-3777de038f25"
+
+	"github.com/wangyysde/bzhycontext"
+	"github.com/wangyysde/bzhyserver"
 )
 
 const (
@@ -19,7 +21,7 @@ const (
 )
 
 type Store interface {
-	sessions.Store
+	bzhysessions.Store
 	Options(Options)
 }
 
@@ -48,23 +50,23 @@ type Session interface {
 	Save() error
 }
 
-func Sessions(name string, store Store) gin.HandlerFunc {
-	return func(c *gin.Context) {
+func Sessions(name string, store Store) bzhyserver.HandlerFunc {
+	return func(c *bzhyserver.Context) {
 		s := &session{name, c.Request, store, nil, false, c.Writer}
 		c.Set(DefaultKey, s)
-		defer context.Clear(c.Request)
+		defer bzhycontext.Clear(c.Request)
 		c.Next()
 	}
 }
 
-func SessionsMany(names []string, store Store) gin.HandlerFunc {
-	return func(c *gin.Context) {
+func SessionsMany(names []string, store Store) bzhyserver.HandlerFunc {
+	return func(c *bzhyserver.Context) {
 		sessions := make(map[string]Session, len(names))
 		for _, name := range names {
 			sessions[name] = &session{name, c.Request, store, nil, false, c.Writer}
 		}
 		c.Set(DefaultKey, sessions)
-		defer context.Clear(c.Request)
+		defer bzhycontext.Clear(c.Request)
 		c.Next()
 	}
 }
@@ -73,7 +75,7 @@ type session struct {
 	name    string
 	request *http.Request
 	store   Store
-	session *sessions.Session
+	session *bzhysessions.Session
 	written bool
 	writer  http.ResponseWriter
 }
@@ -127,9 +129,9 @@ func (s *session) Session() *sessions.Session {
 	if s.session == nil {
 		var err error
 		s.session, err = s.store.Get(s.request, s.name)
-		if err != nil {
-			log.Printf(errorFormat, err)
-		}
+		//		if err != nil {
+		//			log.Printf(errorFormat, err)
+		//		}
 	}
 	return s.session
 }
@@ -139,11 +141,11 @@ func (s *session) Written() bool {
 }
 
 // shortcut to get session
-func Default(c *gin.Context) Session {
+func Default(c *bzhyserver.Context) Session {
 	return c.MustGet(DefaultKey).(Session)
 }
 
 // shortcut to get session with given name
-func DefaultMany(c *gin.Context, name string) Session {
+func DefaultMany(c *bzhyserver.Context, name string) Session {
 	return c.MustGet(DefaultKey).(map[string]Session)[name]
 }

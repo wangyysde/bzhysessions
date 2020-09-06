@@ -1,9 +1,9 @@
 package main
 
 import (
-	"github.com/gin-contrib/sessions"
-	"github.com/gin-contrib/sessions/cookie"
-	"github.com/gin-gonic/gin"
+	"github.com/wangyysde/bzhysessions"
+	"github.com/wangyysde/bzhysessions/cookie"
+	"github.com/wangyysde/bzhyserver"
 )
 
 func main() {
