@@ -5,7 +5,7 @@
 package cookie
 
 import (
-	"bzhysessions"
+	"github.com/wangyysde/bzhysessions"
 )
 
 type Store interface {
