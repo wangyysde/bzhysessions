@@ -8,9 +8,6 @@ import (
 	//	"github.com/wangyysde/bzhylog"
 	"net/http"
 
-	"golang/pipe/golang/pkg/mod/github.com/gorilla/sessions@v1.2.0"
-	"golang/pipe/golang/pkg/mod/github.com/wangyysde/bzhysessions@v0.0.0-20200903142906-3777de038f25"
-
 	"github.com/wangyysde/bzhycontext"
 	"github.com/wangyysde/bzhyserver"
 )

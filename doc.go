@@ -204,4 +204,4 @@ at once: it's sessions.Save(). Here's an example:
 This is possible because when we call Get() from a session store, it adds the
 session to a common registry. Save() uses it to save all registered sessions.
 */
-package sessions
+package bzhysessions
