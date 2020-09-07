@@ -13,7 +13,7 @@ import (
 	"strings"
 	"sync"
 
-	"securecookie"
+	"github.com/wangyysde/securecookie"
 )
 
 // Store is an interface for custom session stores.
